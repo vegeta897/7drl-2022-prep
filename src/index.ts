@@ -23,8 +23,6 @@ window.onload = async (): Promise<void> => {
 
   getLayersExample(app)
 
-  resizeCanvas()
-
   const birdFromSprite = getBird()
   birdFromSprite.anchor.set(0.5, 0.5)
   birdFromSprite.position.set(gameWidth / 2, 530)
@@ -53,18 +51,6 @@ async function loadGameAssets(): Promise<void> {
 
     loader.load()
   })
-}
-
-function resizeCanvas(): void {
-  const resize = () => {
-    app.renderer.resize(window.innerWidth, window.innerHeight)
-    app.stage.scale.x = window.innerWidth / gameWidth
-    app.stage.scale.y = window.innerHeight / gameHeight
-  }
-
-  resize()
-
-  window.addEventListener('resize', resize)
 }
 
 function getBird(): AnimatedSprite {
