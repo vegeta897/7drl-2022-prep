@@ -9,7 +9,7 @@ const gameHeight = 600
 console.log(`Welcome from pixi-typescript-boilerplate ${VERSION}`)
 
 const app = new Application({
-  backgroundColor: 0xd3d3d3,
+  backgroundColor: 0x012345,
   width: gameWidth,
   height: gameHeight,
 })
