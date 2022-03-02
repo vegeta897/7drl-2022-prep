@@ -46,11 +46,9 @@ module.exports = (env) => {
             from: 'assets/**',
 
             // if there are nested subdirectories , keep the hierarchy
-            transformPath(targetPath, absolutePath) {
+            to({ absoluteFilename }) {
               const assetsPath = path.resolve(__dirname, 'assets')
-              const endpPath = absolutePath.slice(assetsPath.length)
-
-              return Promise.resolve(`assets/${endpPath}`)
+              return `assets/${absoluteFilename.slice(assetsPath.length)}`
             },
           },
         ],

@@ -1,5 +1,8 @@
 import { Application, Loader, Texture, AnimatedSprite } from 'pixi.js'
+import * as PIXI from 'pixi.js'
 import './style.css'
+
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
 declare const VERSION: string
 
