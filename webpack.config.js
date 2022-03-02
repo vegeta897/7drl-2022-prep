@@ -37,7 +37,9 @@ module.exports = (env) => {
     },
 
     plugins: [
-      new HtmlWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        title: '7DRL 2022',
+      }),
       new CopyPlugin({
         patterns: [
           {

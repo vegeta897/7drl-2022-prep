@@ -7,6 +7,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf-8'))
 
@@ -30,6 +32,10 @@ module.exports = (env) => {
             },
           },
         },
+        {
+          test: /\.(png)$/i,
+          type: 'asset',
+        },
       ],
     },
 
@@ -50,6 +56,14 @@ module.exports = (env) => {
           terserOptions: {},
         }),
         new CssMinimizerPlugin(),
+        new ImageMinimizerPlugin({
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              plugins: [['optipng', { optimizationLevel: 7 }]],
+            },
+          },
+        }),
       ],
     },
 
@@ -70,6 +84,7 @@ module.exports = (env) => {
       }),
 
       new webpack.ProgressPlugin(),
+      new BundleAnalyzerPlugin(),
     ],
   }
 }
