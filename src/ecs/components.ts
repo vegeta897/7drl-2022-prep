@@ -9,7 +9,7 @@ const GridC = {
 
 export const GridPosition = defineComponent({ ...GridC })
 
-export const MoveAction = defineComponent({ ...GridC })
+export const MoveAction = defineComponent({ ...GridC, clip: Types.i8 })
 
 export const AnimateMovement = defineComponent({
   ...GridC,

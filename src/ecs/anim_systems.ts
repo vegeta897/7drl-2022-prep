@@ -1,5 +1,4 @@
 // Runs after turn systems, handles tweening and other visuals before next input accepted
-
 import { AnimateMovement, DisplayObject, GridPosition } from './components'
 import { defineQuery, removeComponent, System } from 'bitecs'
 import { SpritesByEID } from '../sprites'

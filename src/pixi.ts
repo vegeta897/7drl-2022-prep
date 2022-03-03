@@ -18,7 +18,7 @@ export const PixiViewport = new Viewport({
   screenWidth: PixiApp.view.width,
   screenHeight: PixiApp.view.height,
 })
-PixiViewport.setZoom(3)
+PixiViewport.setZoom(1)
 
 PixiApp.stage.addChild(PixiViewport)
 
@@ -36,7 +36,7 @@ export async function onLoad() {
 async function loadGameAssets(): Promise<void> {
   return new Promise((res, rej) => {
     const loader = Loader.shared
-    loader.add('rabbit', './assets/simpleSpriteSheet.json')
+    loader.add('sprites', './assets/sprites.json')
 
     loader.onComplete.once(() => {
       res()

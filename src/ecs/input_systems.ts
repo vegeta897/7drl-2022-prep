@@ -1,6 +1,6 @@
 import { addComponent, System } from 'bitecs'
 import { ECS } from './'
-import { PlayerEntity } from '../index'
+import { PlayerEntity } from '../'
 import { MoveAction } from './components'
 
 let sleep = false // Ignore input if true
@@ -44,9 +44,11 @@ export const inputSystem: System = (world) => {
   }
   if (action !== null) {
     sleep = true
+    const boost = Keys.has('ControlLeft') || Keys.has('ControlRight') ? 10 : 1
     addComponent(ECS.world, MoveAction, PlayerEntity)
-    MoveAction.x[PlayerEntity] = action.x
-    MoveAction.y[PlayerEntity] = action.y
+    MoveAction.x[PlayerEntity] = action.x * boost
+    MoveAction.y[PlayerEntity] = action.y * boost
+    MoveAction.clip[PlayerEntity] = boost ? 1 : 0
     ECS.runTurn()
   }
   return world

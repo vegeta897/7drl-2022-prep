@@ -1,7 +1,8 @@
 import { addComponent, Changed, defineQuery, Not, removeComponent, System } from 'bitecs'
 import { AnimateMovement, DisplayObject, GridPosition, MoveAction } from './components'
 import { SpritesByEID } from '../sprites'
-import { TILE_SIZE } from '../index'
+import { TILE_SIZE } from '../'
+import { Level, TileMap } from '../level'
 
 export const playerSystem: System = (world) => {
   return world
@@ -11,9 +12,12 @@ const moveQuery = defineQuery([GridPosition, MoveAction])
 
 export const gridMoveSystem: System = (world) => {
   for (const eid of moveQuery(world)) {
-    GridPosition.x[eid] += MoveAction.x[eid]
-    GridPosition.y[eid] += MoveAction.y[eid]
+    const destX = GridPosition.x[eid] + MoveAction.x[eid]
+    const destY = GridPosition.y[eid] + MoveAction.y[eid]
     removeComponent(world, MoveAction, eid)
+    if (MoveAction.clip[eid] === 0 && Level.get(TileMap.keyFromXY(destX, destY))) continue
+    GridPosition.x[eid] = destX
+    GridPosition.y[eid] = destY
     addComponent(world, AnimateMovement, eid)
     AnimateMovement.x[eid] = MoveAction.x[eid]
     AnimateMovement.y[eid] = MoveAction.y[eid]
@@ -28,7 +32,6 @@ const nonAnimated = defineQuery([Changed(GridPosition), DisplayObject, Not(Anima
 
 export const nonAnimatedSystem: System = (world) => {
   for (const eid of nonAnimated(world)) {
-    console.log('insta-move', eid)
     SpritesByEID[eid].x = GridPosition.x[eid] * TILE_SIZE
     SpritesByEID[eid].y = GridPosition.y[eid] * TILE_SIZE
   }

@@ -5,6 +5,7 @@ import { Sprite, Texture } from 'pixi.js'
 import { onLoad, PixiViewport } from './pixi'
 import { DisplayObject, GridPosition } from './ecs/components'
 import { SpritesByEID } from './sprites'
+import { createLevel } from './level'
 
 export const TILE_SIZE = 16
 
@@ -13,7 +14,10 @@ export let PlayerSprite: Sprite
 
 window.onload = async (): Promise<void> => {
   await onLoad()
-  PlayerSprite = new Sprite(Texture.from('birdUp.png'))
+
+  createLevel()
+
+  PlayerSprite = new Sprite(Texture.from('player'))
   SpritesByEID[PlayerEntity] = PlayerSprite
   PixiViewport.addChild(PlayerSprite)
   addComponent(ECS.world, DisplayObject, PlayerEntity)
