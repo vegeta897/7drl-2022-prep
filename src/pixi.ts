@@ -1,4 +1,4 @@
-import { AnimatedSprite, Application, Loader, Texture, Ticker } from 'pixi.js'
+import { Application, Loader, Ticker } from 'pixi.js'
 import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import { ECS } from './ecs'
@@ -31,13 +31,6 @@ export async function onLoad() {
   await loadGameAssets()
 
   document.body.appendChild(PixiApp.view)
-
-  const birdFromSprite = getBird()
-  birdFromSprite.anchor.set(0.5, 0.5)
-  birdFromSprite.position.set(gameWidth / 6, 100)
-
-  PixiViewport.addChild(birdFromSprite)
-  PixiApp.stage.interactive = true
 }
 
 async function loadGameAssets(): Promise<void> {
@@ -55,18 +48,4 @@ async function loadGameAssets(): Promise<void> {
 
     loader.load()
   })
-}
-
-function getBird(): AnimatedSprite {
-  const bird = new AnimatedSprite([
-    Texture.from('birdUp.png'),
-    Texture.from('birdMiddle.png'),
-    Texture.from('birdDown.png'),
-  ])
-
-  bird.loop = true
-  bird.animationSpeed = 0.1
-  bird.play()
-
-  return bird
 }

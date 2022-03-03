@@ -55,28 +55,18 @@ export const inputSystem: System = (world) => {
 const Keys: Set<GameKey> = new Set()
 let currentKey: null | GameKey = null
 
-function isGameKey(key: string): asserts key is GameKey {
-  if (!gameKeys.includes(key as GameKey)) throw 'not game key'
-}
+const isGameKey = (key: string): key is GameKey => gameKeys.includes(key as GameKey)
 
 window.addEventListener('keydown', (e) => {
   if (e.repeat) return
-  try {
-    isGameKey(e.code)
-  } catch (e) {
-    return
-  }
+  if (!isGameKey(e.code)) return
   e.preventDefault()
   Keys.add(e.code)
   currentKey = e.code
   if (!sleep) ECS.runInput()
 })
 window.addEventListener('keyup', (e) => {
-  try {
-    isGameKey(e.code)
-  } catch (e) {
-    return
-  }
+  if (!isGameKey(e.code)) return
   Keys.delete(e.code)
   currentKey = null
 })

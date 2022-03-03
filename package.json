@@ -10,7 +10,7 @@
     "prebuild": "npm run clean",
     "clean": "npx rimraf dist/*",
     "build": "npm run type-check && npm run webpack -- --env mode=production",
-    "start": "npm-run-all --parallel type-check:watch dev",
+    "start": "npm run dev",
     "dev": "npm run webpack-dev-server -- --env mode=development",
     "test": "npx jest",
     "code-coverage": "jest --coverage",
