@@ -25,9 +25,12 @@
   "author": "jkanchelov",
   "license": "MIT",
   "dependencies": {
+    "bitecs": "^0.3.35",
     "core-js": "^3.21.1",
+    "pixi-viewport": "^4.34.4",
     "pixi.js": "^6.2.2",
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.9",
+    "rot-js": "^2.2.0"
   },
   "devDependencies": {
     "@swc/core": "^1.2.146",

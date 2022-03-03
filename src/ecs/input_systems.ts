@@ -1,0 +1,105 @@
+import { addComponent, System } from 'bitecs'
+import { ECS } from './'
+import { PlayerEntity } from '../index'
+import { MoveAction } from './components'
+
+let sleep = false // Ignore input if true
+
+export const wakeInput = () => (sleep = false)
+
+const movements = {
+  up: { x: 0, y: -1 },
+  down: { x: 0, y: 1 },
+  left: { x: -1, y: 0 },
+  right: { x: 1, y: 0 },
+}
+
+export const inputSystem: System = (world) => {
+  let action = null
+  switch (currentKey) {
+    case 'KeyW':
+    case 'KeyK':
+    case 'ArrowUp':
+      action = movements.up
+      break
+    case 'KeyS':
+    case 'KeyJ':
+    case 'ArrowDown':
+      action = movements.down
+      break
+    case 'KeyA':
+    case 'KeyH':
+    case 'ArrowLeft':
+      action = movements.left
+      break
+    case 'KeyD':
+    case 'KeyL':
+    case 'ArrowRight':
+      action = movements.right
+      break
+    case 'Space':
+      break
+    case 'Enter':
+      break
+  }
+  if (action !== null) {
+    sleep = true
+    addComponent(ECS.world, MoveAction, PlayerEntity)
+    MoveAction.x[PlayerEntity] = action.x
+    MoveAction.y[PlayerEntity] = action.y
+    ECS.turnPipeline(world)
+  }
+  return world
+}
+
+const Keys: Set<GameKey> = new Set()
+let currentKey: null | GameKey = null
+
+function isGameKey(key: string): asserts key is GameKey {
+  if (!gameKeys.includes(key as GameKey)) throw 'not game key'
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.repeat) return
+  try {
+    isGameKey(e.code)
+  } catch (e) {
+    return
+  }
+  e.preventDefault()
+  Keys.add(e.code)
+  currentKey = e.code
+  if (!sleep) ECS.inputPipeLine(ECS.world)
+})
+window.addEventListener('keyup', (e) => {
+  try {
+    isGameKey(e.code)
+  } catch (e) {
+    return
+  }
+  Keys.delete(e.code)
+  currentKey = null
+})
+
+type GameKey = typeof gameKeys[number]
+
+const gameKeys = [
+  'KeyW',
+  'KeyA',
+  'KeyS',
+  'KeyD',
+  'KeyK',
+  'KeyJ',
+  'KeyH',
+  'KeyL',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'ShiftLeft',
+  'ShiftRight',
+  'ControlLeft',
+  'ControlRight',
+  'Space',
+  'Enter',
+] as const
