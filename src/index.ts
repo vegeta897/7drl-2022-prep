@@ -18,4 +18,6 @@ window.onload = async (): Promise<void> => {
   PixiViewport.addChild(PlayerSprite)
   addComponent(ECS.world, DisplayObject, PlayerEntity)
   addComponent(ECS.world, GridPosition, PlayerEntity)
+
+  PixiViewport.moveCenter(PlayerSprite)
 }
