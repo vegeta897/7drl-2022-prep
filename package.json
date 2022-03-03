@@ -25,6 +25,7 @@
   "author": "jkanchelov",
   "license": "MIT",
   "dependencies": {
+    "@gamestdio/easing": "^1.0.0",
     "bitecs": "^0.3.35",
     "core-js": "^3.21.1",
     "pixi-viewport": "^4.34.4",

@@ -12,4 +12,9 @@ export const MoveAction = defineComponent({
   y: Types.i32,
 })
 
-export const AnimateMovement = defineComponent()
+export const AnimateMovement = defineComponent({
+  x: Types.i32,
+  y: Types.i32,
+  elapsed: Types.f32,
+  length: Types.f32,
+})

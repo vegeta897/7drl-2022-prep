@@ -47,7 +47,7 @@ export const inputSystem: System = (world) => {
     addComponent(ECS.world, MoveAction, PlayerEntity)
     MoveAction.x[PlayerEntity] = action.x
     MoveAction.y[PlayerEntity] = action.y
-    ECS.turnPipeline(world)
+    ECS.runTurn()
   }
   return world
 }
@@ -69,7 +69,7 @@ window.addEventListener('keydown', (e) => {
   e.preventDefault()
   Keys.add(e.code)
   currentKey = e.code
-  if (!sleep) ECS.inputPipeLine(ECS.world)
+  if (!sleep) ECS.runInput()
 })
 window.addEventListener('keyup', (e) => {
   try {

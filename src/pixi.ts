@@ -23,7 +23,8 @@ PixiViewport.setZoom(3)
 PixiApp.stage.addChild(PixiViewport)
 
 Ticker.shared.add(() => {
-  ECS.renderPipeline(ECS.world)
+  ECS.runAnim()
+  ECS.runRender()
 })
 
 export async function onLoad() {
