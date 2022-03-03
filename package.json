@@ -19,7 +19,6 @@
     "prettier:check": "npm run prettier -- -c ./src/**/*.ts",
     "lint-check": "npx eslint ./src/**/*.ts",
     "code-style-check": "npm run lint-check && npm run prettier:check",
-    "prepare": "husky install",
     "serve": "npx sirv-cli dist --port 8081"
   },
   "author": "jkanchelov",
@@ -49,7 +48,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-webpack-plugin": "^3.1.1",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^7.0.4",
     "identity-obj-proxy": "^3.0.0",
     "image-minimizer-webpack-plugin": "^3.2.3",
     "imagemin": "^8.0.1",
