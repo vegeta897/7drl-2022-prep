@@ -22,15 +22,15 @@ PixiViewport.setZoom(3)
 
 PixiApp.stage.addChild(PixiViewport)
 
-Ticker.shared.add(() => {
-  ECS.runAnim()
-  ECS.runRender()
-})
-
 export async function onLoad() {
   await loadGameAssets()
 
   document.body.appendChild(PixiApp.view)
+
+  Ticker.shared.add(() => {
+    ECS.runAnim()
+    ECS.runRender()
+  })
 }
 
 async function loadGameAssets(): Promise<void> {

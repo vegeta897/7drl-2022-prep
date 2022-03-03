@@ -3,7 +3,7 @@ import { AnimateMovement, DisplayObject, GridPosition, MoveAction } from './comp
 import { inputSystem } from './input_systems'
 import { playerSystem, gridMoveSystem, nonAnimatedSystem } from './turn_systems'
 import { animatedSystem } from './anim_systems'
-// import { ... } from './render_systems'
+import { cameraSystem } from './render_systems'
 
 const world = createWorld()
 
@@ -13,7 +13,7 @@ const pipelines = {
   input: pipe(inputSystem),
   turn: pipe(playerSystem, gridMoveSystem, nonAnimatedSystem),
   anim: pipe(animatedSystem),
-  render: pipe(),
+  render: pipe(cameraSystem),
 }
 
 export const ECS = {
