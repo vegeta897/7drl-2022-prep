@@ -1,5 +1,5 @@
 import { defineQuery, enterQuery, System } from 'bitecs'
-import { PlayerSprite, TILE_SIZE } from '../index'
+import { PlayerSprite, TILE_SIZE } from '../'
 import { PixiViewport } from '../pixi'
 import { Util } from 'rot-js'
 import { DisplayObject, GridPosition } from './components'

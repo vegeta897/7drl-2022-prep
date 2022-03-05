@@ -3,7 +3,7 @@ import { ActionTimer, AnimateMovement, DisplayObject, GridPosition, MoveAction, 
 import { SpritesByEID } from '../sprites'
 import { TILE_SIZE } from '../'
 import { RNG } from 'rot-js'
-import { Down, Left, Right, Up } from '../grid'
+import { Down, Left, Right, Up } from '../vector2'
 import { runActions, World } from './'
 import { runAnimations } from './anim_systems'
 

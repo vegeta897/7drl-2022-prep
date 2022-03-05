@@ -2,7 +2,7 @@ import { addComponent, System } from 'bitecs'
 import { onInput, World } from './'
 import { PlayerEntity } from '../'
 import { MoveAction } from './components'
-import { Down, Left, Right, Up } from '../grid'
+import { Down, Left, Right, Up } from '../vector2'
 
 export const waitForInput = () => (WaitingForInput = true)
 export let WaitingForInput = true

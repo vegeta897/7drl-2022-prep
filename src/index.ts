@@ -5,7 +5,8 @@ import { Sprite, Texture } from 'pixi.js'
 import { onLoad, PixiViewport } from './pixi'
 import { ActionTimer, DisplayObject, GridPosition, RandomWalk } from './ecs/components'
 import { SpritesByEID } from './sprites'
-import { createLevel } from './level'
+import { createLevel, OpenAreas } from './level'
+import { RNG } from 'rot-js'
 
 export const TILE_SIZE = 16
 
@@ -22,14 +23,16 @@ window.onload = async (): Promise<void> => {
   PixiViewport.addChild(PlayerSprite)
   addComponent(World, DisplayObject, PlayerEntity)
   addComponent(World, GridPosition, PlayerEntity)
+  const playerStart = RNG.getItem(OpenAreas)!
+  GridPosition.x[PlayerEntity] = playerStart.x
+  GridPosition.y[PlayerEntity] = playerStart.y
 
   PixiViewport.moveCenter(PlayerSprite)
 
-  addBat(5, 5)
-  addBat(7, 5)
-  addBat(9, 5)
-  addBat(5, 7)
-  addBat(5, 9)
+  for (let i = 0; i < 20; i++) {
+    const batStart = RNG.getItem(OpenAreas)!
+    addBat(batStart.x, batStart.y)
+  }
 }
 
 function addBat(x: number, y: number) {

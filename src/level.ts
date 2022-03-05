@@ -1,12 +1,15 @@
 import * as ROT from 'rot-js'
 import { Sprite, Texture } from 'pixi.js'
-import { TILE_SIZE } from './index'
+import { TILE_SIZE } from './'
 import { PixiViewport } from './pixi'
+import { getDiamondAround, Vector2 } from './vector2'
 
 const MAP_WIDTH = 80
 const MAP_HEIGHT = 40
 
 export let Level: Map<string, Tile>
+
+export let OpenAreas: Vector2[] = []
 
 export function createLevel() {
   const cellular = new ROT.Map.Cellular(MAP_WIDTH, MAP_HEIGHT)
@@ -24,6 +27,14 @@ export function createLevel() {
     wallSprite.y = y * TILE_SIZE
     PixiViewport.addChild(wallSprite)
   }, 1)
+  for (let x = 2; x < MAP_WIDTH - 3; x++) {
+    for (let y = 2; y < MAP_HEIGHT - 3; y++) {
+      const diamond = getDiamondAround({ x, y }, 2)
+      if (diamond.every((g) => !Level.get(TileMap.keyFromXY(g.x, g.y)))) {
+        OpenAreas.push({ x, y })
+      }
+    }
+  }
 }
 
 export enum Tile {
