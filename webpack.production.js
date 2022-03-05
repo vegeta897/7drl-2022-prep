@@ -9,6 +9,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const ZipPlugin = require('zip-webpack-plugin')
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf-8'))
 
@@ -85,6 +86,10 @@ module.exports = (env) => {
 
       new webpack.ProgressPlugin(),
       new BundleAnalyzerPlugin(),
+      new ZipPlugin({
+        filename: 'app.zip',
+        exclude: [/\.js.map$/],
+      }),
     ],
   }
 }

@@ -2,6 +2,10 @@
   "name": "7drl-2022-prep",
   "version": "1.0.0",
   "description": "Preparing for 7DRL 2022",
+  "author": {
+    "name": "Devin Spikowski",
+    "url": "https://github.com/vegeta897"
+  },
   "scripts": {
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server",
@@ -18,10 +22,10 @@
     "prettier:check": "npm run prettier -- -c ./src/**/*.ts",
     "lint-check": "npx eslint ./src/**/*.ts",
     "code-style-check": "npm run lint-check && npm run prettier:check",
-    "serve": "npx sirv-cli dist --port 8081"
+    "serve": "npx sirv-cli dist --port 8081",
+    "publish": "butler push dist/app.zip vegeta897/7drl-2022:html5",
+    "status": "butler status vegeta897/7drl-2022:html5"
   },
-  "author": "jkanchelov",
-  "license": "MIT",
   "dependencies": {
     "@gamestdio/easing": "^1.0.0",
     "bitecs": "^0.3.35",
@@ -66,6 +70,16 @@
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4",
-    "webpack-merge": "^5.8.0"
-  }
+    "webpack-merge": "^5.8.0",
+    "zip-webpack-plugin": "^4.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vegeta897/7drl-2022-prep.git"
+  },
+  "keywords": [
+    "roguelike"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/vegeta897/7drl-2022-prep#readme"
 }
