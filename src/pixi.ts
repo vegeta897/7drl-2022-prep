@@ -5,8 +5,8 @@ import { ECS } from './ecs'
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
-const gameWidth = 800
-const gameHeight = 600
+const gameWidth = 940
+const gameHeight = 666
 
 export const PixiApp = new Application({
   backgroundColor: 0x012345,
@@ -37,15 +37,8 @@ async function loadGameAssets(): Promise<void> {
   return new Promise((res, rej) => {
     const loader = Loader.shared
     loader.add('sprites', './assets/sprites.json')
-
-    loader.onComplete.once(() => {
-      res()
-    })
-
-    loader.onError.once(() => {
-      rej()
-    })
-
+    loader.onComplete.once(() => res())
+    loader.onError.once(() => rej())
     loader.load()
   })
 }

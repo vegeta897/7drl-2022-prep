@@ -3,7 +3,7 @@ import { ECS } from './ecs'
 import { addComponent, addEntity } from 'bitecs'
 import { Sprite, Texture } from 'pixi.js'
 import { onLoad, PixiViewport } from './pixi'
-import { DisplayObject, GridPosition } from './ecs/components'
+import { DisplayObject, GridPosition, RandomWalk } from './ecs/components'
 import { SpritesByEID } from './sprites'
 import { createLevel } from './level'
 
@@ -24,4 +24,14 @@ window.onload = async (): Promise<void> => {
   addComponent(ECS.world, GridPosition, PlayerEntity)
 
   PixiViewport.moveCenter(PlayerSprite)
+
+  const bat = addEntity(ECS.world)
+  const batSprite = new Sprite(Texture.from('bat'))
+  SpritesByEID[bat] = batSprite
+  PixiViewport.addChild(batSprite)
+  addComponent(ECS.world, DisplayObject, bat)
+  addComponent(ECS.world, GridPosition, bat)
+  addComponent(ECS.world, RandomWalk, bat)
+  GridPosition.x[bat] = 5
+  GridPosition.y[bat] = 5
 }

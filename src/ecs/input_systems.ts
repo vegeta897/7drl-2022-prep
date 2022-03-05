@@ -2,53 +2,51 @@ import { addComponent, System } from 'bitecs'
 import { ECS } from './'
 import { PlayerEntity } from '../'
 import { MoveAction } from './components'
+import { Down, Left, Right, Up } from '../grid'
 
 let sleep = false // Ignore input if true
 
 export const wakeInput = () => (sleep = false)
 
-const movements = {
-  up: { x: 0, y: -1 },
-  down: { x: 0, y: 1 },
-  left: { x: -1, y: 0 },
-  right: { x: 1, y: 0 },
-}
-
 export const inputSystem: System = (world) => {
   let action = null
+  let wait = false
   switch (currentKey) {
     case 'KeyW':
     case 'KeyK':
     case 'ArrowUp':
-      action = movements.up
+      action = Up
       break
     case 'KeyS':
     case 'KeyJ':
     case 'ArrowDown':
-      action = movements.down
+      action = Down
       break
     case 'KeyA':
     case 'KeyH':
     case 'ArrowLeft':
-      action = movements.left
+      action = Left
       break
     case 'KeyD':
     case 'KeyL':
     case 'ArrowRight':
-      action = movements.right
+      action = Right
       break
     case 'Space':
+      wait = true
       break
     case 'Enter':
       break
   }
   if (action !== null) {
     sleep = true
-    const boost = Keys.has('ControlLeft') || Keys.has('ControlRight') ? 10 : 1
+    const boost = Keys.has('ControlLeft') || Keys.has('ControlRight')
     addComponent(ECS.world, MoveAction, PlayerEntity)
-    MoveAction.x[PlayerEntity] = action.x * boost
-    MoveAction.y[PlayerEntity] = action.y * boost
+    MoveAction.x[PlayerEntity] = action.x * (boost ? 10 : 1)
+    MoveAction.y[PlayerEntity] = action.y * (boost ? 10 : 1)
     MoveAction.clip[PlayerEntity] = boost ? 1 : 0
+    ECS.runTurn()
+  } else if (wait) {
     ECS.runTurn()
   }
   return world

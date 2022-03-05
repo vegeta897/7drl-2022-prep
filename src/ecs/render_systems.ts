@@ -1,11 +1,24 @@
-import { System } from 'bitecs'
+import { defineQuery, enterQuery, System } from 'bitecs'
 import { PlayerSprite, TILE_SIZE } from '../index'
 import { PixiViewport } from '../pixi'
 import { Util } from 'rot-js'
+import { DisplayObject, GridPosition } from './components'
+import { SpritesByEID } from '../sprites'
 
 const PADDING = 1.25 / 3 // Portion of screen to pad
 const PAD_X = Math.floor(PixiViewport.screenWidthInWorldPixels / 2 - PixiViewport.screenWidthInWorldPixels * PADDING)
 const PAD_Y = Math.floor(PixiViewport.screenHeightInWorldPixels / 2 - PixiViewport.screenHeightInWorldPixels * PADDING)
+
+const spriteQuery = defineQuery([DisplayObject, GridPosition])
+const enteredSpriteQuery = enterQuery(spriteQuery)
+
+export const spriteAddSystem: System = (world) => {
+  for (const eid of enteredSpriteQuery(world)) {
+    SpritesByEID[eid].x = GridPosition.x[eid] * TILE_SIZE
+    SpritesByEID[eid].y = GridPosition.y[eid] * TILE_SIZE
+  }
+  return world
+}
 
 export const cameraSystem: System = (world) => {
   const centerX = PlayerSprite.x + TILE_SIZE / 2

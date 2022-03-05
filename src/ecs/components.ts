@@ -17,6 +17,8 @@ export const AnimateMovement = defineComponent({
   length: Types.f32,
 })
 
+export const RandomWalk = defineComponent()
+
 class GridProxy {
   private store: ComponentType<typeof GridC>
   eid: number

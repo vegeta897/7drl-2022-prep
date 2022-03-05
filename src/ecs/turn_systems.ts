@@ -1,10 +1,20 @@
 import { addComponent, Changed, defineQuery, Not, removeComponent, System } from 'bitecs'
-import { AnimateMovement, DisplayObject, GridPosition, MoveAction } from './components'
+import { AnimateMovement, DisplayObject, GridPosition, MoveAction, RandomWalk } from './components'
 import { SpritesByEID } from '../sprites'
 import { TILE_SIZE } from '../'
 import { Level, TileMap } from '../level'
+import { RNG } from 'rot-js'
+import { Down, Left, Right, Up } from '../grid'
 
-export const playerSystem: System = (world) => {
+const randomWalkQuery = defineQuery([GridPosition, RandomWalk])
+
+export const randomWalkSystem: System = (world) => {
+  for (const eid of randomWalkQuery(world)) {
+    const dir = RNG.getItem([Up, Down, Left, Right])!
+    addComponent(world, MoveAction, eid)
+    MoveAction.x[eid] = dir.x
+    MoveAction.y[eid] = dir.y
+  }
   return world
 }
 
