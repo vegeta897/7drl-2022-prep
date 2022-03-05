@@ -41,3 +41,6 @@ async function loadGameAssets(): Promise<void> {
     loader.load()
   })
 }
+
+export const promisedFrame = async (): Promise<DOMHighResTimeStamp> =>
+  new Promise((res) => requestAnimationFrame((time) => res(time)))

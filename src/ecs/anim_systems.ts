@@ -1,24 +1,18 @@
-// Runs after turn systems, handles tweening and other visuals before next input accepted
 import { AnimateMovement, DisplayObject, GridPosition } from './components'
 import { defineQuery, IWorld, removeComponent } from 'bitecs'
 import { SpritesByEID } from '../sprites'
 import { TILE_SIZE } from '../'
 import { cubicOut } from '@gamestdio/easing'
+import { promisedFrame } from '../pixi'
 
 export async function runAnimations(world: IWorld) {
   let last = performance.now()
   let done = false
   while (!done) {
-    const now = await awaitAnimationFrame()
+    const now = await promisedFrame()
     done = animateMovement(world, now - last)
     last = now
   }
-}
-
-async function awaitAnimationFrame(): Promise<DOMHighResTimeStamp> {
-  return new Promise((res) => {
-    requestAnimationFrame((time) => res(time))
-  })
 }
 
 const animated = defineQuery([GridPosition, DisplayObject, AnimateMovement])
