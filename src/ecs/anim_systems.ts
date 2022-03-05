@@ -1,24 +1,30 @@
 // Runs after turn systems, handles tweening and other visuals before next input accepted
 import { AnimateMovement, DisplayObject, GridPosition } from './components'
-import { defineQuery, removeComponent, System } from 'bitecs'
+import { defineQuery, IWorld, removeComponent } from 'bitecs'
 import { SpritesByEID } from '../sprites'
-import { TILE_SIZE } from '../index'
-import { wakeInput } from './input_systems'
+import { TILE_SIZE } from '../'
 import { cubicOut } from '@gamestdio/easing'
 
-let last = performance.now()
-let delta: number
+export async function runAnimations(world: IWorld) {
+  let last = performance.now()
+  let done = false
+  while (!done) {
+    const now = await awaitAnimationFrame()
+    done = animateMovement(world, now - last)
+    last = now
+  }
+}
+
+async function awaitAnimationFrame(): Promise<DOMHighResTimeStamp> {
+  return new Promise((res) => {
+    requestAnimationFrame((time) => res(time))
+  })
+}
 
 const animated = defineQuery([GridPosition, DisplayObject, AnimateMovement])
-export const animatedSystem: System = (world) => {
-  const now = performance.now()
-  delta = now - last
-  last = now
+const animateMovement = (world: IWorld, delta: number): boolean => {
   const toAnimate = animated(world)
-  if (toAnimate.length === 0) {
-    wakeInput()
-    return world
-  }
+  if (toAnimate.length === 0) return true
   for (const eid of toAnimate) {
     const elapsed = (AnimateMovement.elapsed[eid] += delta)
     const animLength = AnimateMovement.length[eid]
@@ -29,5 +35,5 @@ export const animatedSystem: System = (world) => {
       removeComponent(world, AnimateMovement, eid)
     }
   }
-  return world
+  return false
 }

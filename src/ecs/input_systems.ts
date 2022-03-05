@@ -1,12 +1,11 @@
 import { addComponent, System } from 'bitecs'
-import { ECS } from './'
+import { onInput, World } from './'
 import { PlayerEntity } from '../'
 import { MoveAction } from './components'
 import { Down, Left, Right, Up } from '../grid'
 
-let sleep = false // Ignore input if true
-
-export const wakeInput = () => (sleep = false)
+export const waitForInput = () => (WaitingForInput = true)
+export let WaitingForInput = true
 
 export const inputSystem: System = (world) => {
   let action = null
@@ -39,15 +38,14 @@ export const inputSystem: System = (world) => {
       break
   }
   if (action !== null) {
-    sleep = true
     const boost = Keys.has('ControlLeft') || Keys.has('ControlRight')
-    addComponent(ECS.world, MoveAction, PlayerEntity)
+    addComponent(World, MoveAction, PlayerEntity)
     MoveAction.x[PlayerEntity] = action.x * (boost ? 10 : 1)
     MoveAction.y[PlayerEntity] = action.y * (boost ? 10 : 1)
     MoveAction.clip[PlayerEntity] = boost ? 1 : 0
-    ECS.runTurn()
+    WaitingForInput = false
   } else if (wait) {
-    ECS.runTurn()
+    WaitingForInput = false
   }
   return world
 }
@@ -57,13 +55,13 @@ let currentKey: null | GameKey = null
 
 const isGameKey = (key: string): key is GameKey => gameKeys.includes(key as GameKey)
 
-window.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', async (e) => {
   if (e.repeat) return
   if (!isGameKey(e.code)) return
   e.preventDefault()
   Keys.add(e.code)
   currentKey = e.code
-  if (!sleep) ECS.runInput()
+  if (WaitingForInput) await onInput()
 })
 window.addEventListener('keyup', (e) => {
   if (!isGameKey(e.code)) return

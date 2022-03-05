@@ -1,15 +1,15 @@
 import './style.css'
-import { ECS } from './ecs'
+import { World } from './ecs'
 import { addComponent, addEntity } from 'bitecs'
 import { Sprite, Texture } from 'pixi.js'
 import { onLoad, PixiViewport } from './pixi'
-import { DisplayObject, GridPosition, RandomWalk } from './ecs/components'
+import { ActionTimer, DisplayObject, GridPosition, RandomWalk } from './ecs/components'
 import { SpritesByEID } from './sprites'
 import { createLevel } from './level'
 
 export const TILE_SIZE = 16
 
-export const PlayerEntity = addEntity(ECS.world)
+export const PlayerEntity = addEntity(World)
 export let PlayerSprite: Sprite
 
 window.onload = async (): Promise<void> => {
@@ -20,18 +20,28 @@ window.onload = async (): Promise<void> => {
   PlayerSprite = new Sprite(Texture.from('player'))
   SpritesByEID[PlayerEntity] = PlayerSprite
   PixiViewport.addChild(PlayerSprite)
-  addComponent(ECS.world, DisplayObject, PlayerEntity)
-  addComponent(ECS.world, GridPosition, PlayerEntity)
+  addComponent(World, DisplayObject, PlayerEntity)
+  addComponent(World, GridPosition, PlayerEntity)
 
   PixiViewport.moveCenter(PlayerSprite)
 
-  const bat = addEntity(ECS.world)
+  addBat(5, 5)
+  addBat(7, 5)
+  addBat(9, 5)
+  addBat(5, 7)
+  addBat(5, 9)
+}
+
+function addBat(x: number, y: number) {
+  const bat = addEntity(World)
   const batSprite = new Sprite(Texture.from('bat'))
   SpritesByEID[bat] = batSprite
   PixiViewport.addChild(batSprite)
-  addComponent(ECS.world, DisplayObject, bat)
-  addComponent(ECS.world, GridPosition, bat)
-  addComponent(ECS.world, RandomWalk, bat)
-  GridPosition.x[bat] = 5
-  GridPosition.y[bat] = 5
+  addComponent(World, DisplayObject, bat)
+  addComponent(World, GridPosition, bat)
+  addComponent(World, RandomWalk, bat)
+  addComponent(World, ActionTimer, bat)
+  ActionTimer.timeLeft[bat] = 0
+  GridPosition.x[bat] = x
+  GridPosition.y[bat] = y
 }

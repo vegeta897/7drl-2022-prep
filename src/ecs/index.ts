@@ -1,28 +1,32 @@
 import { createWorld, pipe, registerComponents } from 'bitecs'
-import { AnimateMovement, DisplayObject, GridPosition, MoveAction } from './components'
-import { inputSystem } from './input_systems'
-import { gridMoveSystem, nonAnimatedSystem, randomWalkSystem } from './turn_systems'
-import { animatedSystem } from './anim_systems'
+import { ActionTimer, AnimateMovement, DisplayObject, GridPosition, MoveAction, RandomWalk } from './components'
+import { inputSystem, waitForInput, WaitingForInput } from './input_systems'
+import { playerSystem } from './player_systems'
+import { nonAnimatedSystem, runTimer } from './enemy_systems'
+import { moveSystem } from './action_systems'
+import { runAnimations } from './anim_systems'
 import { cameraSystem, spriteAddSystem } from './render_systems'
 
-const world = createWorld()
+export const World = createWorld()
 
-registerComponents(world, [DisplayObject, GridPosition, MoveAction, AnimateMovement])
+registerComponents(World, [DisplayObject, GridPosition, MoveAction, AnimateMovement, RandomWalk, ActionTimer])
 
-const pipelines = {
-  input: pipe(inputSystem),
-  turn: pipe(randomWalkSystem, gridMoveSystem, nonAnimatedSystem),
-  anim: pipe(animatedSystem),
+const systemGroups = {
+  input: inputSystem,
+  playerTurn: playerSystem,
+  actions: pipe(moveSystem, nonAnimatedSystem),
   render: pipe(spriteAddSystem, cameraSystem),
 }
 
-export const ECS = {
-  world,
-  runInput: () => pipelines.input(world),
-  runTurn: () => pipelines.turn(world),
-  runAnim: () => pipelines.anim(world),
-  runRender: () => pipelines.render(world),
+export async function onInput() {
+  systemGroups.input(World)
+  if (WaitingForInput) return
+  systemGroups.playerTurn(World)
+  runActions()
+  await runAnimations(World)
+  await runTimer()
+  waitForInput()
 }
 
-// Run anim once so changed queries work on first change
-ECS.runAnim()
+export const runActions = () => systemGroups.actions(World)
+export const runRender = () => systemGroups.render(World)

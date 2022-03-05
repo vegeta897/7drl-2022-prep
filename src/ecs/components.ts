@@ -19,6 +19,10 @@ export const AnimateMovement = defineComponent({
 
 export const RandomWalk = defineComponent()
 
+export const ActionTimer = defineComponent({
+  timeLeft: Types.ui16,
+})
+
 class GridProxy {
   private store: ComponentType<typeof GridC>
   eid: number

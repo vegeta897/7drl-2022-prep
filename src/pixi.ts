@@ -1,7 +1,7 @@
 import { Application, Loader, Ticker } from 'pixi.js'
 import * as PIXI from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
-import { ECS } from './ecs'
+import { runRender } from './ecs'
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
@@ -28,8 +28,7 @@ export async function onLoad() {
   document.body.appendChild(PixiApp.view)
 
   Ticker.shared.add(() => {
-    ECS.runAnim()
-    ECS.runRender()
+    runRender()
   })
 }
 
