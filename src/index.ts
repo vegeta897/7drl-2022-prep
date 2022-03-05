@@ -2,11 +2,11 @@ import './style.css'
 import { World } from './ecs'
 import { addComponent, addEntity } from 'bitecs'
 import { Sprite, Texture } from 'pixi.js'
-import { onLoad, PixiViewport } from './pixi'
+import { initPixi, PixiViewport } from './pixi'
 import { ActionTimer, DisplayObject, GridPosition, RandomWalk } from './ecs/components'
 import { SpritesByEID } from './sprites'
 import { createLevel, OpenAreas } from './level'
-import { RNG } from 'rot-js'
+import { Display, RNG } from 'rot-js'
 
 export const TILE_SIZE = 16
 
@@ -14,7 +14,11 @@ export const PlayerEntity = addEntity(World)
 export let PlayerSprite: Sprite
 
 window.onload = async (): Promise<void> => {
-  await onLoad()
+  const display = new Display({ width: 20, height: 30, fontSize: 20, fontStyle: 'bold' })
+  document.body.appendChild(display.getContainer()!)
+  display.drawText(0, 0, 'hello')
+
+  await initPixi()
 
   createLevel()
 

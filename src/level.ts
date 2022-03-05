@@ -18,11 +18,12 @@ export function createLevel() {
     cellular.create()
   }
   Level = new Map()
+  const wallTexture = Texture.from('wall')
   cellular.connect((x, y, value) => {
     const isBoundary = x === 0 || x === MAP_WIDTH - 1 || y === 0 || y === MAP_HEIGHT - 1
     if (!isBoundary && value === 1) return
     Level.set(TileMap.keyFromXY(x, y), Tile.Wall)
-    const wallSprite = new Sprite(Texture.from('wall'))
+    const wallSprite = new Sprite(wallTexture)
     wallSprite.x = x * TILE_SIZE
     wallSprite.y = y * TILE_SIZE
     PixiViewport.addChild(wallSprite)

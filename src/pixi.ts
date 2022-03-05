@@ -5,8 +5,8 @@ import { runRender } from './ecs'
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
-const gameWidth = 940
-const gameHeight = 666
+const gameWidth = 640
+const gameHeight = 640
 
 export const PixiApp = new Application({
   backgroundColor: 0x012345,
@@ -15,14 +15,14 @@ export const PixiApp = new Application({
 })
 
 export const PixiViewport = new Viewport({
-  screenWidth: PixiApp.view.width,
-  screenHeight: PixiApp.view.height,
+  screenWidth: gameWidth,
+  screenHeight: gameHeight,
 })
-PixiViewport.setZoom(1)
+PixiViewport.setZoom(2)
 
 PixiApp.stage.addChild(PixiViewport)
 
-export async function onLoad() {
+export async function initPixi() {
   await loadGameAssets()
 
   document.body.appendChild(PixiApp.view)
